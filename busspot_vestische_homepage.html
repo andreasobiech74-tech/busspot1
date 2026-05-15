@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>busSpot.com – Fahrgast TV Vestische</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bus-blue: #185FA5;
+    --bus-blue-dark: #042C53;
+    --bus-blue-light: #E6F1FB;
+    --bus-accent: #EF9F27;
+    --bus-accent-dark: #633806;
+    --white: #ffffff;
+    --gray-text: #5F5E5A;
+    --gray-light: #F1EFE8;
+    --gray-mid: #D3D1C7;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    color: #2C2C2A;
+    background: var(--white);
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 2rem;
+    background: rgba(4,44,83,0.96);
+    backdrop-filter: blur(8px);
+  }
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--white);
+    letter-spacing: -0.02em;
+  }
+  .nav-logo span { color: var(--bus-accent); }
+  .nav-links { display: flex; gap: 2rem; }
+  .nav-links a {
+    color: rgba(255,255,255,0.75);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 400;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--bus-accent); }
+  .nav-cta {
+    background: var(--bus-accent);
+    color: var(--bus-accent-dark);
+    padding: 0.5rem 1.25rem;
+    border-radius: 4px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  .nav-cta:hover { opacity: 0.85; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--bus-blue-dark) 0%, var(--bus-blue) 60%, #1a7abd 100%);
+    display: flex; align-items: center;
+    padding: 7rem 2rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: -20%; right: -10%;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: rgba(239,159,39,0.08);
+    pointer-events: none;
+  }
+  .hero::after {
+    content: '';
+    position: absolute; bottom: -15%; left: -8%;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+    pointer-events: none;
+  }
+  .hero-inner {
+    max-width: 1100px; margin: 0 auto; width: 100%;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+  }
+  .hero-eyebrow {
+    font-size: 0.8rem; font-weight: 500; letter-spacing: 0.12em;
+    color: var(--bus-accent); text-transform: uppercase; margin-bottom: 1rem;
+  }
+  .hero-h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.2rem, 4vw, 3.4rem);
+    font-weight: 800;
+    color: var(--white);
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.5rem;
+  }
+  .hero-h1 em { color: var(--bus-accent); font-style: normal; }
+  .hero-sub {
+    color: rgba(255,255,255,0.72);
+    font-size: 1.05rem;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+    font-weight: 300;
+  }
+  .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--bus-accent);
+    color: var(--bus-accent-dark);
+    padding: 0.85rem 2rem;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: transform 0.2s, opacity 0.2s;
+  }
+  .btn-primary:hover { transform: translateY(-2px); opacity: 0.9; }
+  .btn-secondary {
+    background: transparent;
+    color: var(--white);
+    border: 1.5px solid rgba(255,255,255,0.4);
+    padding: 0.85rem 2rem;
+    border-radius: 4px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .btn-secondary:hover { border-color: var(--white); background: rgba(255,255,255,0.08); }
+
+  /* HERO STATS */
+  .hero-stats {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
+  }
+  .stat-card {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: background 0.2s;
+  }
+  .stat-card:hover { background: rgba(255,255,255,0.11); }
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--bus-accent);
+    line-height: 1;
+    margin-bottom: 0.4rem;
+  }
+  .stat-label {
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.4;
+  }
+
+  /* SECTIONS */
+  section { padding: 5rem 2rem; }
+  .container { max-width: 1100px; margin: 0 auto; }
+
+  .section-tag {
+    font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--bus-blue); font-weight: 700; margin-bottom: 0.75rem;
+  }
+  .section-h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    color: var(--bus-blue-dark);
+    line-height: 1.15;
+    margin-bottom: 1rem;
+  }
+  .section-lead {
+    font-size: 1.05rem; color: var(--gray-text);
+    line-height: 1.75; max-width: 640px;
+    font-weight: 300;
+  }
+
+  /* PREISE */
+  .pricing-bg { background: var(--gray-light); }
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 1.25rem;
+    margin-top: 3rem;
+  }
+  .price-card {
+    background: var(--white);
+    border-radius: 12px;
+    border: 1px solid var(--gray-mid);
+    padding: 1.75rem 1.5rem;
+    position: relative;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .price-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(24,95,165,0.1); }
+  .price-card.featured {
+    border: 2px solid var(--bus-blue);
+    background: var(--bus-blue-light);
+  }
+  .featured-badge {
+    position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+    background: var(--bus-blue);
+    color: var(--white);
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 4px 12px; border-radius: 20px;
+  }
+  .price-period {
+    font-size: 0.8rem; color: var(--gray-text); font-weight: 500; text-transform: uppercase;
+    letter-spacing: 0.05em; margin-bottom: 0.75rem;
+  }
+  .price-amount {
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem; font-weight: 800;
+    color: var(--bus-blue-dark);
+    margin-bottom: 0.3rem;
+  }
+  .price-amount span { font-size: 1rem; font-weight: 400; }
+  .price-discount {
+    display: inline-block;
+    background: #EAF3DE; color: #3B6D11;
+    font-size: 0.72rem; font-weight: 700; padding: 2px 8px; border-radius: 4px;
+    margin-bottom: 1rem;
+  }
+  .price-reach {
+    font-size: 0.82rem; color: var(--gray-text); line-height: 1.5;
+    border-top: 1px solid var(--gray-mid); padding-top: 0.75rem; margin-top: 0.75rem;
+  }
+  .price-reach strong { color: var(--bus-blue-dark); display: block; margin-bottom: 2px; }
+
+  /* REICHWEITE */
+  .reach-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin-top: 3rem; align-items: start;
+  }
+  .age-bar { margin-bottom: 1.25rem; }
+  .age-label {
+    display: flex; justify-content: space-between;
+    font-size: 0.85rem; margin-bottom: 6px;
+    color: var(--bus-blue-dark); font-weight: 500;
+  }
+  .age-label span:last-child { color: var(--bus-blue); font-weight: 700; }
+  .bar-track {
+    height: 8px; background: var(--gray-light); border-radius: 4px; overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%; border-radius: 4px;
+    background: var(--bus-blue);
+    transition: width 1s ease;
+  }
+  .bar-fill.accent { background: var(--bus-accent); }
+
+  .reach-info { display: flex; flex-direction: column; gap: 1.25rem; }
+  .info-item {
+    display: flex; gap: 1rem; align-items: flex-start;
+  }
+  .info-icon {
+    width: 40px; height: 40px; border-radius: 8px;
+    background: var(--bus-blue-light);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-size: 1.2rem;
+  }
+  .info-text h4 { font-size: 0.95rem; font-weight: 700; color: var(--bus-blue-dark); margin-bottom: 3px; }
+  .info-text p { font-size: 0.85rem; color: var(--gray-text); line-height: 1.5; }
+
+  /* STÄDTE */
+  .cities-bg { background: var(--bus-blue-dark); }
+  .cities-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1rem;
+    margin-top: 3rem;
+  }
+  .city-card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 1.25rem 1rem;
+    transition: background 0.2s;
+  }
+  .city-card:hover { background: rgba(255,255,255,0.1); }
+  .city-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem; font-weight: 700;
+    color: var(--white); margin-bottom: 6px;
+  }
+  .city-pop { font-size: 0.78rem; color: rgba(255,255,255,0.55); margin-bottom: 3px; }
+  .city-nutzer {
+    font-size: 0.82rem; color: var(--bus-accent); font-weight: 700;
+  }
+
+  /* BRANCHEN */
+  .branchen-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 0.75rem; margin-top: 2.5rem;
+  }
+  .branche-tag {
+    background: var(--bus-blue-light);
+    border: 1px solid rgba(24,95,165,0.15);
+    color: var(--bus-blue-dark);
+    border-radius: 6px;
+    padding: 0.6rem 1rem;
+    font-size: 0.82rem;
+    font-weight: 500;
+    text-align: center;
+    transition: background 0.2s, color 0.2s;
+    cursor: default;
+  }
+  .branche-tag:hover { background: var(--bus-blue); color: var(--white); }
+
+  /* TECHNIK */
+  .tech-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; margin-top: 3rem; align-items: center;
+  }
+  .spec-list { display: flex; flex-direction: column; gap: 0.75rem; }
+  .spec-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0.85rem 1rem;
+    background: var(--gray-light); border-radius: 8px;
+  }
+  .spec-key { font-size: 0.85rem; color: var(--gray-text); }
+  .spec-val { font-size: 0.9rem; font-weight: 700; color: var(--bus-blue-dark); }
+
+  .screen-mockup {
+    background: #1a1a2e;
+    border-radius: 16px;
+    padding: 1.5rem;
+    aspect-ratio: 16/9;
+    display: flex; flex-direction: column; justify-content: space-between;
+    position: relative; overflow: hidden;
+  }
+  .screen-top {
+    display: flex; justify-content: space-between; align-items: flex-start;
+  }
+  .screen-line-badge {
+    background: var(--bus-accent);
+    color: var(--bus-accent-dark);
+    font-family: 'Syne', sans-serif;
+    font-size: 1.5rem; font-weight: 800;
+    width: 56px; height: 56px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .screen-news-ticker {
+    height: 28px; background: rgba(24,95,165,0.4);
+    border-radius: 4px;
+    display: flex; align-items: center;
+    padding: 0 12px;
+    font-size: 0.72rem; color: rgba(255,255,255,0.7);
+    overflow: hidden;
+    flex: 1; margin-left: 1rem;
+  }
+  .ticker-inner {
+    white-space: nowrap;
+    animation: ticker 12s linear infinite;
+  }
+  @keyframes ticker {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+  }
+  .screen-ad-area {
+    background: rgba(239,159,39,0.15);
+    border: 2px dashed rgba(239,159,39,0.5);
+    border-radius: 8px;
+    flex: 1; margin: 0.75rem 0;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--bus-accent);
+    font-family: 'Syne', sans-serif;
+    font-weight: 700; font-size: 0.85rem;
+    letter-spacing: 0.05em;
+  }
+  .screen-stop {
+    display: flex; justify-content: space-between; align-items: center;
+    background: rgba(255,255,255,0.06); border-radius: 6px; padding: 0.5rem 0.75rem;
+  }
+  .stop-label { font-size: 0.75rem; color: rgba(255,255,255,0.5); }
+  .stop-name { font-size: 0.9rem; color: var(--white); font-weight: 700; }
+  .stop-signal {
+    background: #E24B4A;
+    color: var(--white);
+    font-size: 0.65rem; font-weight: 700;
+    padding: 3px 8px; border-radius: 4px;
+    letter-spacing: 0.08em;
+  }
+
+  /* KONTAKT */
+  .contact-bg { background: var(--bus-accent); }
+  .contact-inner {
+    display: grid; grid-template-columns: 1fr auto; gap: 4rem; align-items: center;
+  }
+  .contact-h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 800;
+    color: var(--bus-accent-dark);
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.02em;
+  }
+  .contact-sub { color: rgba(99,56,6,0.75); font-size: 1rem; line-height: 1.6; }
+  .contact-details { display: flex; flex-direction: column; gap: 0.75rem; }
+  .contact-item {
+    background: rgba(255,255,255,0.3);
+    border-radius: 8px; padding: 0.85rem 1.25rem;
+    text-align: center;
+  }
+  .contact-item-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(99,56,6,0.65); margin-bottom: 3px; }
+  .contact-item-val { font-weight: 700; color: var(--bus-accent-dark); font-size: 0.95rem; }
+
+  /* FOOTER */
+  footer {
+    background: var(--bus-blue-dark);
+    padding: 2rem;
+    text-align: center;
+    color: rgba(255,255,255,0.4);
+    font-size: 0.82rem;
+  }
+  footer strong { color: rgba(255,255,255,0.7); }
+
+  /* SCROLL ANIM */
+  .fade-in { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-in.visible { opacity: 1; transform: none; }
+
+  @media (max-width: 700px) {
+    .hero-inner, .reach-grid, .tech-grid, .contact-inner { grid-template-columns: 1fr; }
+    .hero-stats { grid-template-columns: 1fr 1fr; }
+    nav { padding: 1rem; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">bus<span>Spot</span>.com</div>
+  <div class="nav-links">
+    <a href="#preise">Preise</a>
+    <a href="#reichweite">Reichweite</a>
+    <a href="#staedte">Städte</a>
+    <a href="#branchen">Branchen</a>
+    <a href="#kontakt">Kontakt</a>
+  </div>
+  <a href="#kontakt" class="nav-cta">Angebot anfragen</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <p class="hero-eyebrow">Massenmedium · Vestisches Fahrgastfernsehen</p>
+      <h1 class="hero-h1">Ihre Werbung total <em>„online"</em> – in 153 Bussen</h1>
+      <p class="hero-sub">201 Screens im Einzugsgebiet Vest Recklinghausen. Täglich 15 Stunden Sendezeit. Über 843.000 Einwohner erreichbar – regional, günstig, wirkungsvoll.</p>
+      <div class="hero-btns">
+        <a href="#preise" class="btn-primary">Preise ansehen</a>
+        <a href="#kontakt" class="btn-secondary">Kontakt aufnehmen</a>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-card">
+        <div class="stat-num">201</div>
+        <div class="stat-label">TFT-Screens in 153 Vestischen Bussen</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">843K</div>
+        <div class="stat-label">Einwohner im Einzugsgebiet</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">60,5M</div>
+        <div class="stat-label">Fahrgastbeförderungen pro Jahr</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">94,6%</div>
+        <div class="stat-label">bewerten das Programm als sehr gut</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PREISE -->
+<section class="pricing-bg" id="preise">
+  <div class="container">
+    <div class="fade-in">
+      <p class="section-tag">Preisliste</p>
+      <h2 class="section-h2">Transparente Konditionen</h2>
+      <p class="section-lead">Alle Preise netto zzgl. MwSt. Einmalig 65,00 € je Einspielung/Aktualisierung. Preisbasis: 60 Spot-Wiederholungen pro Tag, täglich 5–20 Uhr.</p>
+    </div>
+    <div class="pricing-grid fade-in">
+
+      <div class="price-card">
+        <div class="price-period">1 Woche</div>
+        <div class="price-amount">250 <span>€</span></div>
+        <div class="price-reach">
+          <strong>704.454 Bruttokontakte</strong>
+          ca. 270.863 Einwohner (32,1 %)
+        </div>
+      </div>
+
+      <div class="price-card">
+        <div class="price-period">2 Wochen</div>
+        <div class="price-amount">475 <span>€</span></div>
+        <div class="price-discount">5 % Rabatt</div>
+        <div class="price-reach">
+          <strong>1.408.908 Bruttokontakte</strong>
+          ca. 307.147 Einwohner (36,4 %)
+        </div>
+      </div>
+
+      <div class="price-card featured">
+        <div class="featured-badge">Beliebteste Wahl</div>
+        <div class="price-period">1 Monat</div>
+        <div class="price-amount">925 <span>€</span></div>
+        <div class="price-discount">7,5 % Rabatt</div>
+        <div class="price-reach">
+          <strong>2.817.816 Bruttokontakte</strong>
+          ca. 392.372 Einwohner (46,5 %)
+        </div>
+      </div>
+
+      <div class="price-card">
+        <div class="price-period">3 Monate</div>
+        <div class="price-amount">2.700 <span>€</span></div>
+        <div class="price-discount">10 % Rabatt</div>
+        <div class="price-reach">
+          <strong>8.956.629 Bruttokontakte</strong>
+          ca. 417.686 Einwohner (49,5 %)
+        </div>
+      </div>
+
+      <div class="price-card">
+        <div class="price-period">1 Jahr</div>
+        <div class="price-amount">10.400 <span>€</span></div>
+        <div class="price-discount">20 % Rabatt</div>
+        <div class="price-reach">
+          <strong>36.732.244 Bruttokontakte</strong>
+          ca. 549.405 Einwohner (65,1 %)
+        </div>
+      </div>
+
+    </div>
+    <p style="margin-top:1.5rem; font-size:0.8rem; color:var(--gray-text);">Spotlängen bis zu 30 Sekunden. 60, 120 und 180 Wiederholungen pro Tag möglich. Die 10-Sekunden-Preise sind linear. TKP ab 0,35 €.</p>
+  </div>
+</section>
+
+<!-- REICHWEITE -->
+<section id="reichweite">
+  <div class="container">
+    <div class="fade-in">
+      <p class="section-tag">Zielgruppen & Reichweite</p>
+      <h2 class="section-h2">Alle Altersgruppen. Eine Plattform.</h2>
+      <p class="section-lead">62,9 % der Bevölkerung ab 14 Jahren in hochverdichteten Agglomerationsräumen nutzen den ÖPNV. Das Fahrgastfernsehen erreicht sie täglich.</p>
+    </div>
+    <div class="reach-grid fade-in">
+      <div>
+        <h3 style="font-family:'Syne',sans-serif; font-size:1rem; font-weight:700; color:var(--bus-blue-dark); margin-bottom:1.5rem;">Bruttokontakte nach Altersgruppe (Woche)</h3>
+        <div class="age-bar">
+          <div class="age-label"><span>18–29 Jahre</span><span>231.404</span></div>
+          <div class="bar-track"><div class="bar-fill accent" style="width:100%"></div></div>
+        </div>
+        <div class="age-bar">
+          <div class="age-label"><span>14–17 Jahre</span><span>92.067</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:40%"></div></div>
+        </div>
+        <div class="age-bar">
+          <div class="age-label"><span>30–39 Jahre</span><span>95.282</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:41%"></div></div>
+        </div>
+        <div class="age-bar">
+          <div class="age-label"><span>40–49 Jahre</span><span>82.035</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:35%"></div></div>
+        </div>
+        <div class="age-bar">
+          <div class="age-label"><span>50–59 Jahre</span><span>67.938</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:29%"></div></div>
+        </div>
+        <div class="age-bar">
+          <div class="age-label"><span>60–64 Jahre</span><span>25.049</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:11%"></div></div>
+        </div>
+        <div class="age-bar">
+          <div class="age-label"><span>Über 65 Jahre</span><span>110.679</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:48%"></div></div>
+        </div>
+      </div>
+      <div class="reach-info">
+        <div class="info-item">
+          <div class="info-icon">🕔</div>
+          <div class="info-text">
+            <h4>15 Stunden täglich</h4>
+            <p>Kernsendezeit 5:00–20:00 Uhr. Betriebszeit der Busse 4:30–1:00 Uhr.</p>
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="info-icon">🔁</div>
+          <div class="info-text">
+            <h4>Alle 15 Minuten</h4>
+            <p>Standard-Wiederholung. Bis zu 3 Kontakte je 15-minütiger Fahrt möglich.</p>
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="info-icon">📺</div>
+          <div class="info-text">
+            <h4>201 Screens, 113 Linien</h4>
+            <p>105 Standardbusse + 96 Gelenkbusse. Flächendeckend im gesamten Einzugsgebiet.</p>
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="info-icon">📰</div>
+          <div class="info-text">
+            <h4>Redaktioneller Kontext</h4>
+            <p>WDR-Newsticker, Haltestellen-Info, 5 News-Rubriken. Ihre Werbung wirkt nicht aufdringlich.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STÄDTE -->
+<section class="cities-bg" id="staedte">
+  <div class="container">
+    <div class="fade-in">
+      <p class="section-tag" style="color:var(--bus-accent);">Einzugsgebiet</p>
+      <h2 class="section-h2" style="color:var(--white);">Vest Recklinghausen & mehr</h2>
+      <p class="section-lead" style="color:rgba(255,255,255,0.6);">Das Netz der Vestischen erstreckt sich über 11 Städte und Gemeinden im Ruhrgebiet mit über 843.000 Einwohnern.</p>
+    </div>
+    <div class="cities-grid fade-in">
+      <div class="city-card">
+        <div class="city-name">Recklinghausen</div>
+        <div class="city-pop">120.363 Einwohner</div>
+        <div class="city-nutzer">73,5 % ÖPNV-Nutzer</div>
+      </div>
+      <div class="city-card">
+        <div class="city-name">Bottrop</div>
+        <div class="city-pop">116.835 Einwohner</div>
+        <div class="city-nutzer">73,5 % ÖPNV-Nutzer</div>
+      </div>
+      <div class="city-card">
+        <div class="city-name">Gelsenkirchen-Nord</div>
+        <div class="city-pop">133.017 Einwohner</div>
+        <div class="city-nutzer">73,5 % ÖPNV-Nutzer</div>
+      </div>
+      <div class="city-card">
+        <div class="city-name">Marl</div>
+        <div class="city-pop">86.831 Einwohner</div>
+        <div class="city-nutzer">60,4 % ÖPNV-Nutzer</div>
+      </div>
+      <div class="city-card">
+        <div class="city-name">Dorsten</div>
+        <div class="city-pop">76.543 Einwohner</div>
+        <div class="city-nutzer">60,4 % ÖPNV-Nutzer</div>
+      </div>
+      <div class="city-card">
+        <div class="city-name">Gladbeck</div>
+        <div class="city-pop">77.881 Einwohner</div>
+        <div class="city-nutzer">60,4 % ÖPNV-Nutzer</div>
+      </div>
+      <div class="city-card">
+        <div class="city-name">Herten</div>
+        <div class="city-pop">62.360 Einwohner</div>
+        <div class="city-nutzer">60,4 % ÖPNV-Nutzer</div>
+      </div>
+      <div class="city-card">
+        <div class="city-name">Castrop-Rauxel</div>
+        <div class="city-pop">74.004 Einwohner</div>
+        <div class="city-nutzer">60,4 % ÖPNV-Nutzer</div>
+      </div>
+      <div class="city-card">
+        <div class="city-name">Datteln</div>
+        <div class="city-pop">35.723 Einwohner</div>
+        <div class="city-nutzer">51,3 % ÖPNV-Nutzer</div>
+      </div>
+      <div class="city-card">
+        <div class="city-name">Oer-Erkenschwick</div>
+        <div class="city-pop">31.010 Einwohner</div>
+        <div class="city-nutzer">51,3 % ÖPNV-Nutzer</div>
+      </div>
+      <div class="city-card">
+        <div class="city-name">Waltrop</div>
+        <div class="city-pop">29.245 Einwohner</div>
+        <div class="city-nutzer">51,3 % ÖPNV-Nutzer</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BRANCHEN -->
+<section id="branchen">
+  <div class="container">
+    <div class="fade-in">
+      <p class="section-tag">Für wen geeignet?</p>
+      <h2 class="section-h2">Eigentlich für alle Branchen.</h2>
+      <p class="section-lead">Ob Einzelhandel, Gastronomie oder Dienstleistung – das Fahrgastfernsehen ist ein echtes Massenmedium mit breiter Zielgruppe.</p>
+    </div>
+    <div class="branchen-grid fade-in">
+      <div class="branche-tag">Einzelhandel</div>
+      <div class="branche-tag">Mode & Boutiquen</div>
+      <div class="branche-tag">Gastronomie</div>
+      <div class="branche-tag">Kino & Events</div>
+      <div class="branche-tag">Fitness-Studios</div>
+      <div class="branche-tag">Telekommunikation</div>
+      <div class="branche-tag">Kosmetik</div>
+      <div class="branche-tag">Buchhandel</div>
+      <div class="branche-tag">Versicherungen</div>
+      <div class="branche-tag">Banken</div>
+      <div class="branche-tag">Elektronik</div>
+      <div class="branche-tag">Recruiting</div>
+      <div class="branche-tag">Parfümerien</div>
+      <div class="branche-tag">Spielzeug</div>
+      <div class="branche-tag">Fahrrad-Fachhandel</div>
+      <div class="branche-tag">Shopping-Center</div>
+      <div class="branche-tag">Ausflugsziele</div>
+      <div class="branche-tag">Automobilhandel</div>
+    </div>
+    <p style="margin-top:2rem; font-size:0.9rem; color:var(--gray-text);">Besonders effektiv: Zu Ostern und Weihnachten für alle Branchen. Stellenangebote & Recruiting ganzjährig besonders wirksam.</p>
+  </div>
+</section>
+
+<!-- TECHNIK -->
+<section style="background:var(--gray-light);" id="technik">
+  <div class="container">
+    <div class="fade-in">
+      <p class="section-tag">Technische Specs</p>
+      <h2 class="section-h2">Ihr Spot – so einfach wie möglich.</h2>
+      <p class="section-lead">Film oder Standbild – wir unterstützen alle gängigen Formate. Lieferung per E-Mail reicht.</p>
+    </div>
+    <div class="tech-grid fade-in">
+      <div class="spec-list">
+        <div class="spec-row"><span class="spec-key">Auflösung</span><span class="spec-val">1440×810 px &amp; 960×553 px</span></div>
+        <div class="spec-row"><span class="spec-key">Filmspot</span><span class="spec-val">DivX / Xvid im AVI-Container</span></div>
+        <div class="spec-row"><span class="spec-key">Bitrate</span><span class="spec-val">5.040 kbit/s – 25 fps</span></div>
+        <div class="spec-row"><span class="spec-key">Standbild</span><span class="spec-val">JPG unkomprimiert, max. 250 kByte</span></div>
+        <div class="spec-row"><span class="spec-key">Spotlänge</span><span class="spec-val">10 Sek. Basis (bis 30 Sek.)</span></div>
+        <div class="spec-row"><span class="spec-key">Wiederholungen</span><span class="spec-val">60 / 120 / 180 × täglich</span></div>
+        <div class="spec-row"><span class="spec-key">Einspielung</span><span class="spec-val">einmalig 65,00 €</span></div>
+      </div>
+      <div class="screen-mockup">
+        <div class="screen-top">
+          <div class="screen-line-badge">SB1</div>
+          <div class="screen-news-ticker">
+            <div class="ticker-inner">WDR Newsticker: Aktuelle Schlagzeilen aus der Region Vest Recklinghausen · Wetter · Sport · Kultur · Lokalnachrichten</div>
+          </div>
+        </div>
+        <div class="screen-ad-area">✦ IHRE WERBUNG ✦</div>
+        <div class="screen-stop">
+          <div>
+            <div class="stop-label">Nächste Haltestelle</div>
+            <div class="stop-name">Recklinghausen ZOB</div>
+          </div>
+          <div class="stop-signal">STOP</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- KONTAKT -->
+<section class="contact-bg" id="kontakt">
+  <div class="container">
+    <div class="contact-inner fade-in">
+      <div>
+        <h2 class="contact-h2">Jetzt Werbung buchen – wir beraten Sie gerne.</h2>
+        <p class="contact-sub">Erik Schare übernimmt die Mediaplanung für Sie persönlich. Kostenlos und unverbindlich. Auf Wunsch gibt es sogar eine Freifahrt mit der Vestischen – damit Sie sich selbst ein Bild machen können!</p>
+      </div>
+      <div class="contact-details">
+        <div class="contact-item">
+          <div class="contact-item-label">Telefon</div>
+          <div class="contact-item-val">+49 (0)176 208 155 13</div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-label">E-Mail</div>
+          <div class="contact-item-val">Werbung@busSpot.com</div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-label">Ansprechpartner</div>
+          <div class="contact-item-val">Erik Schare – Mediaplanung</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <strong>busSpot.com – passenger TV media agency</strong><br>
+  Ihr Partner für Fahrgastfernsehen im Einzugsgebiet der Vestischen Straßenbahnen GmbH Herten.
+</footer>
+
+<script>
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.12 });
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
